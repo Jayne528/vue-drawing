@@ -1,0 +1,99 @@
+@mixin size($w,$h:$w) {
+    width: $w;
+    height: $h;
+}
+html,body {
+    background-color: #111;
+    color: white;
+}
+.row {
+    display: flex;
+}
+.control,.main {
+    padding: 10px;
+}
+label {
+    margin-right: 20px;
+}
+.graphAll {
+    position: relative;
+}
+.graph {
+    position: relative;
+    .block {
+        @include size(4vmin);
+        border: 1px solid #ddd;
+        background-color: #eee;
+        cursor: pointer;
+        color: #333;
+        font-size: 11px;
+        // border-radius: 50%;
+        &:hover {
+            background-color: #ccc;
+        }
+        &.active {
+            background-color: #333;
+        }
+    }
+}
+.graphLight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    .block {
+        @include size(4vmin);
+        border: 1px solid #ddd;
+        background-color: #fff;
+        cursor: pointer;
+        color: #333;
+        font-size: 11px;
+        &.active {
+            display: block;
+            background-color: rgb(240, 102, 102);
+        }
+    }
+    &.active {
+        display: block;
+        ~.graph {
+            opacity: 0.85;
+        }
+    }
+}
+.control {
+    input,textarea,button {
+        padding: 5px 10px;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+}
+.modeTab {
+    padding: 5px 30px;
+    background-color: #eee;
+    display: inline-block;
+    margin: 0 1px;
+    color: #000;
+    cursor: pointer;
+    position: relative;
+    &.active {
+        background-color: #aaa;
+        color: white;
+    }
+    button {
+        position: absolute;
+        right: 0;
+        background-color: #f24;
+        color: white;
+        border: none;
+        &.active {
+            display: none;
+        }
+    }
+}
+.lightBox {
+    display: none;
+    &.showMode {
+        display: inline-block;
+    }
+}

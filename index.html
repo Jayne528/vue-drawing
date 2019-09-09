@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="row">
+            <div class="main">
+                <h3>按數字鍵可快速切換影格</h3>
+                <label>Mirror-X
+                    <input type="checkbox" v-model="mirrorModeX">
+                </label>
+                <label>Mirror-Y
+                    <input type="checkbox" v-model="mirrorModeY">
+                </label>
+                <label> LightBox
+                    <input type="checkbox" v-model="lightBoxMode">
+                    <select class="lightBox" v-model="lightBox" :class="{showMode:lightBoxMode}">
+                        <option v-for="i in graphModes.length" :value="i-1">影格{{i}}</option>
+                    </select>
+                </label>
+                <label> 編輯模式{{editing}}</label>
+                <div class="graphAll">
+                    <div class="graphLight" :class="{active:lightBoxMode}">
+                        <div class="row" v-for="o in settings.height">
+                            <div class="block" v-for="i in settings.width" :class="{active:graphLightDate[getArrayId(o,i)].value=='+'}"></div>
+                        </div>
+                    </div>
+                    <div class="graph" @mousedown="editing=true" @mouseup="editing=false">
+                        <div class="row" v-for="o in settings.height">
+                            <div class="block" v-for="i in settings.width" @click="toggleBlock(o,i)" @mousemove="editing?toggleBlock(o,i,true): '' " :class="{active:graphDate[getArrayId(o,i)].value=='+'}">
+                                <!-- {{o}}-{{i}} -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modeTab" v-for="(mode,modeId) in graphModes" @click="currentModeId=modeId" :class="{active:modeId==currentModeId}">
+                    <span>{{modeId+1}}</span>
+                    <!-- :class="{active: graphModes.length<=1}" -->
+                    <button  @click.stop="removeMode(modeId)" :class="{active: graphModes.length<2}"> - </button>
+                </div>
+                <div class="modeTab" @click="addMode"> + </div>
+            </div>
+            <div class="control">
+                <label>Width
+                    <input v-model.number="settings.width"  type="number" @change="init">
+                </label>
+                <br>
+                <label>Height
+                    <input v-model.number="settings.height"  type="number" @change="init">
+                </label>
+                <br>
+                <textarea name="" id="" cols="30" rows="10" v-html="code"></textarea>
+                <button @click="init">Clean</button>
+                <button @click="loadCode">Load Data</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html
